@@ -20,9 +20,6 @@ RUN mkdir -p uploads/job_attachment uploads/profile_picture
 # Copy JAR file from build stage
 COPY --from=build /app/target/JobUp-0.0.1-SNAPSHOT.jar app.jar
 
-# Copy uploads directory
-COPY --from=build /app/uploads ./uploads
-
 # Set environment variables
 ENV SPRING_PROFILES_ACTIVE=prod \
     JAVA_OPTS="-Xmx512m -Xms256m"
