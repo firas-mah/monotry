@@ -1,0 +1,48 @@
+<div class="file-upload-container">
+    <!-- Upload Area -->
+    <div *ngIf="canUploadMore()" class="upload-area">
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        [multiple]="allowMultiple"
+        accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx"
+        class="file-input"
+        id="file-upload-input">
+
+  
+      <label for="file-upload-input" class="upload-label">
+        <div class="upload-content">
+          <span *ngIf="!isUploading" class="upload-icon">📎</span>
+          <span *ngIf="isUploading" class="upload-icon">⏳</span>
+          <p *ngIf="!isUploading">Click to upload files</p>
+          <p *ngIf="isUploading">Uploading...</p>
+          <p class="upload-hint">
+            {{ allowMultiple ? ('Up to ' + maxFiles + ' files') : '1 file' }}
+          </p>
+        </div>
+      </label>
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="uploadError" class="error-message">
+      {{ uploadError }}
+    </div>
+  
+    <!-- Uploaded Files List -->
+    <div *ngIf="uploadedFiles.length > 0" class="uploaded-files">
+      <h4>Uploaded Files:</h4>
+      <div class="file-list">
+        <div *ngFor="let file of uploadedFiles" class="file-item">
+          <span class="file-name">{{ file.originalFileName }}</span>
+          <button
+            (click)="removeFile(file.id!)"
+            class="remove-button"
+            type="button">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

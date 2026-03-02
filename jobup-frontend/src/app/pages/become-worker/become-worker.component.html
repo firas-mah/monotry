@@ -1,0 +1,135 @@
+  <!-- Header avec navigation -->
+<!-- Navigation -->
+<nav class="bg-white shadow">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex items-center">
+        <h1 class="text-xl font-bold text-gray-900">JobUp</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div *ngIf="currentUser$ | async as user" class="flex items-center space-x-4">
+          <span class="text-sm text-gray-700">
+            Welcome! <span *ngIf="user?.roles">({{ user.roles.join(', ') }})</span>
+          </span>
+          <button
+            (click)="logout()"
+            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md mx-auto">
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold text-gray-900">
+        Become a Service Provider
+      </h2>
+      <p class="mt-2 text-sm text-gray-600">
+        Fill out this form to start offering your services
+      </p>
+    </div>
+
+    <div class="mt-8 bg-white py-8 px-6 shadow rounded-lg">
+      <form [formGroup]="workerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <!-- Job Type Field -->
+        <div>
+          <label for="jobType" class="block text-sm font-medium text-gray-700">
+            Job Type <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="jobType"
+            formControlName="jobType"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+          >
+            <option value="">Select a job type</option>
+            <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
+          </select>
+          <div *ngIf="workerForm.get('jobType')?.invalid && workerForm.get('jobType')?.touched" 
+               class="mt-1 text-sm text-red-600">
+            Job type is required
+          </div>
+        </div>
+
+        <!-- Phone Number Field -->
+        <div>
+          <label for="phoneNumber" class="block text-sm font-medium text-gray-700">
+            Phone Number <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Enter your phone number"
+          />
+          <div *ngIf="workerForm.get('phoneNumber')?.invalid && workerForm.get('phoneNumber')?.touched" 
+               class="mt-1 text-sm text-red-600">
+            Phone number is required
+          </div>
+        </div>
+
+        <!-- Location Field -->
+        <div>
+          <label for="location" class="block text-sm font-medium text-gray-700">
+            Location <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="location"
+            formControlName="location"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Enter your location"
+          />
+          <div *ngIf="workerForm.get('location')?.invalid && workerForm.get('location')?.touched" 
+               class="mt-1 text-sm text-red-600">
+            Location is required
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700">
+            Description
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Describe your services and experience..."
+          ></textarea>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-md p-4">
+          <div class="text-sm text-red-600">{{ error }}</div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="flex space-x-4">
+          <button
+            type="submit"
+            [disabled]="workerForm.invalid || isLoading"
+            class="flex-1 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span *ngIf="!isLoading">Create Worker Profile</span>
+            <span *ngIf="isLoading">Creating...</span>
+          </button>
+          
+          <button
+            type="button"
+            (click)="onCancel()"
+            class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

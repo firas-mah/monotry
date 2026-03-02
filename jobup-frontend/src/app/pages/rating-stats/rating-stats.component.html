@@ -1,0 +1,48 @@
+<div class="rating-stats" *ngIf="stats">
+  <!-- Overall Rating -->
+  <div class="overall-rating">
+    <app-rating-display
+      [rating]="stats.averageRating || 0"
+      [totalRatings]="stats.totalRatings || 0"
+      size="large"
+      [showText]="true"
+      [showCount]="true">
+    </app-rating-display>
+  </div>
+
+  <!-- Job Completion Stats -->
+  <div class="completion-stats" *ngIf="stats.totalCompletedJobs">
+    <div class="stat-item">
+      <span class="stat-label">Completed Jobs:</span>
+      <span class="stat-value">{{ stats.totalCompletedJobs }}</span>
+    </div>
+    <div class="stat-item" *ngIf="stats.totalRatings">
+      <span class="stat-label">Rating Rate:</span>
+      <span class="stat-value">{{ ((stats.totalRatings / stats.totalCompletedJobs) * 100).toFixed(0) }}%</span>
+    </div>
+  </div>
+
+  <!-- Rating Distribution -->
+  <div class="rating-distribution" *ngIf="showDistribution && stats.totalRatings && stats.totalRatings > 0">
+    <h4>Rating Breakdown</h4>
+    <div class="distribution-bars">
+      <div class="distribution-row" *ngFor="let item of distributionData">
+        <div class="stars-label">
+          <span *ngFor="let star of getStarArray(item.stars)" class="star">★</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="item.percentage"></div>
+        </div>
+        <div class="count-label">{{ item.count }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Ratings Message -->
+  <div class="no-ratings" *ngIf="!stats.totalRatings || stats.totalRatings === 0">
+    <p>No ratings available yet.</p>
+    <p *ngIf="stats.totalCompletedJobs && stats.totalCompletedJobs > 0" class="completed-jobs">
+      {{ stats.totalCompletedJobs }} job{{ stats.totalCompletedJobs === 1 ? '' : 's' }} completed
+    </p>
+  </div>
+</div>

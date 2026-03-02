@@ -1,0 +1,163 @@
+<app-header></app-header>
+
+<div class="worker-detail-container">
+  <!-- Chat Overlay -->
+  <div *ngIf="showChat" class="chat-overlay">
+    <app-smart-chat
+      [workerId]="workerId || ''"
+      [workerName]="worker?.fullName || ''"
+      [clientId]="currentUserId"
+      [clientName]="currentUserName"
+      [forceUserType]="authService.getBusinessRole()"  
+      (closeChatEvent)="closeChat()"
+    ></app-smart-chat>
+  </div>
+
+
+  <!-- Navigation -->
+  <div class="navigation">
+    <button class="back-btn" (click)="goBack()">
+      <i class="back-icon">←</i>
+      Back to Workers
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading worker details...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <i class="error-icon">⚠</i>
+    {{ error }}
+    <button class="retry-btn" (click)="loadWorkerDetail()">Retry</button>
+  </div>
+
+  <!-- Worker Details -->
+  <div *ngIf="!isLoading && !error && worker" class="worker-detail-card">
+    <!-- Header Section -->
+    <div class="worker-header">
+      <app-profile-picture-display
+          [userId]="getWorkerOwnerId(worker)"
+          [username]="getWorkerUsername(worker)" 
+          size="large"
+          [showFallback]="true">
+        </app-profile-picture-display>
+      <div class="worker-info">
+        <h1 class="worker-name">{{ worker.fullName }}</h1>
+        <p class="worker-job">{{ worker.jobType }}</p>
+        <app-rating-display
+          [rating]="worker.rating || 0"
+          [totalRatings]="ratingStats?.totalRatings || 0"
+          size="large"
+          [showText]="true"
+          [showCount]="true">
+        </app-rating-display>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="info-section">
+      <h2>Contact Information</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">
+            <i class="icon">📞</i>
+            Phone Number
+          </div>
+          <div class="info-value">
+            {{ worker.phoneNumber }}
+            <button class="action-btn" (click)="callWorker()" title="Call">
+              📞
+            </button>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <i class="icon">📍</i>
+            Location
+          </div>
+          <div class="info-value">
+            {{ worker.location }}
+            <button class="action-btn" (click)="getDirections()" title="Get Directions">
+              🗺️
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Professional Information -->
+    <div class="info-section">
+      <h2>Professional Information</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">
+            <i class="icon">💼</i>
+            Job Type
+          </div>
+          <div class="info-value">{{ worker.jobType }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <i class="icon">⭐</i>
+            Rating
+          </div>
+          <div class="info-value">
+            <app-rating-display
+              [rating]="worker.rating || 0"
+              [totalRatings]="ratingStats?.totalRatings || 0"
+              size="medium"
+              [showText]="true"
+              [showCount]="false">
+            </app-rating-display>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="info-section">
+      <h2>About</h2>
+      <div class="description">
+        <p>{{ worker.description || 'No description available.' }}</p>
+      </div>
+    </div>
+
+    <!-- Rating Statistics -->
+    <div class="info-section" *ngIf="ratingStats">
+      <h2>Ratings & Reviews</h2>
+      <app-rating-stats
+        [workerId]="workerId || ''"
+        [stats]="ratingStats"
+        [showDistribution]="true">
+      </app-rating-stats>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+      <!-- New Contact Worker Button -->
+      <button class="primary-btn contact-btn" (click)="openChat()">
+        <i class="icon">💬</i>
+        Contact Worker
+      </button>
+      
+      <button class="secondary-btn" (click)="callWorker()">
+        <i class="icon">📞</i>
+        Call Worker
+      </button>
+      <button class="secondary-btn" (click)="getDirections()">
+        <i class="icon">🗺️</i>
+        Get Directions
+      </button>
+      <button class="secondary-btn" (click)="editWorker()">
+        <i class="icon">✏️</i>
+        Edit Profile
+      </button>
+    </div>
+  </div>
+</div>

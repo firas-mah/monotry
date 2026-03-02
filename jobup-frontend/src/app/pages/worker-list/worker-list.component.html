@@ -1,0 +1,129 @@
+<app-header></app-header>
+<div class="worker-list-container">
+  <!-- Header Section -->
+  <div class="header">
+    <h1>Find Workers</h1>
+    <p>Browse and search for skilled workers in your area</p>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section">
+    <form [formGroup]="searchForm" class="search-form">
+      <div class="search-row">
+        <!-- Job Type Filter -->
+        <div class="search-group">
+          <label for="jobType" class="search-label">Job Type</label>
+          <select
+            id="jobType"
+            formControlName="jobType"
+            class="search-select"
+            (change)="searchByJobType()"
+          >
+            <option *ngFor="let jobType of jobTypes" [value]="jobType">
+              {{ jobType }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Location Filter -->
+        <div class="search-group">
+          <label for="location" class="search-label">Location</label>
+          <input
+            type="text"
+            id="location"
+            formControlName="location"
+            class="search-input"
+            placeholder="Enter city or area"
+            (input)="searchByLocation()"
+          />
+        </div>
+
+        <!-- Clear Button -->
+        <div class="search-group">
+          <button type="button" class="clear-btn" (click)="clearSearch()">
+            Clear Filters
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results Summary -->
+  <div class="results-summary">
+    <p>{{ filteredWorkers.length }} worker(s) found</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading workers...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <i class="error-icon">⚠</i>
+    {{ error }}
+    <button class="retry-btn" (click)="loadAllWorkers()">Retry</button>
+  </div>
+
+  <!-- Workers Grid -->
+  <div *ngIf="!isLoading && !error" class="workers-grid">
+    <div
+      *ngFor="let worker of filteredWorkers"
+      class="worker-card"
+      (click)="viewWorkerDetail(worker.id)"
+    >
+      <div class="worker-header">
+        <app-profile-picture-display
+          [userId]="getWorkerOwnerId(worker)"
+          [username]="getWorkerUsername(worker)" 
+          size="medium"
+          [showFallback]="true">
+        </app-profile-picture-display>
+        <div class="worker-info">
+          <h3 class="worker-name">{{ worker.fullName }}</h3>
+          <p class="worker-job">{{ worker.jobType }}</p>
+        </div>
+      </div>
+
+      <div class="worker-details">
+        <div class="detail-item">
+          <i class="icon">📍</i>
+          <span>{{ worker.location }}</span>
+        </div>
+
+        <div class="detail-item">
+          <i class="icon">📞</i>
+          <span>{{ worker.phoneNumber }}</span>
+        </div>
+
+        <div class="detail-item rating">
+          <app-rating-display
+            [rating]="worker.rating || 0"
+            [totalRatings]="0"
+            size="small"
+            [showText]="true"
+            [showCount]="false">
+          </app-rating-display>
+        </div>
+      </div>
+
+      <div class="worker-description">
+        <p>{{ worker.description | slice:0:100 }}{{ (worker.description?.length || 0) > 100 ? '...' : '' }}</p>
+      </div>
+
+      <div class="worker-actions">
+        <button class="view-btn" (click)="viewWorkerDetail(worker.id); $event.stopPropagation()">
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !error && filteredWorkers.length === 0" class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3>No workers found</h3>
+    <p>Try adjusting your search criteria.</p>
+  </div>
+</div>

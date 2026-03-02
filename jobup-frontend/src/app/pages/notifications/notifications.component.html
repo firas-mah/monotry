@@ -1,0 +1,118 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+  <!-- Header Section -->
+  <div class="bg-white shadow-sm border-b">
+    <div class="max-w-4xl mx-auto px-4 py-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <button
+            (click)="goBack()"
+            class="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back
+          </button>
+          <div class="h-6 w-px bg-gray-300"></div>
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Notifications</h1>
+            <p class="text-gray-600 mt-1">Stay updated with your job posts activity</p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-sm text-gray-500">{{ notifications.length }} notifications</span>
+          <button
+            (click)="markAllAsRead()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2"
+            [disabled]="notifications.length === 0"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Mark All Read</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications Container -->
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center py-12">
+      <div class="animate-pulse">
+        <div class="w-16 h-16 bg-blue-200 rounded-full mx-auto mb-4"></div>
+        <div class="h-4 bg-blue-200 rounded w-48 mx-auto mb-2"></div>
+        <div class="h-3 bg-blue-100 rounded w-32 mx-auto"></div>
+      </div>
+      <p class="text-gray-500 mt-4">Loading notifications...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && notifications.length === 0" class="text-center py-16">
+      <div class="max-w-md mx-auto">
+        <svg class="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 17h5l-5 5v-5zM4.828 4.828A4 4 0 015.5 4H9v1H5.5a3 3 0 00-2.121.879l-.707.707A1 1 0 012 7.414V11H1V7.414a2 2 0 01.586-1.414l.707-.707A5 5 0 015.5 3H9a1 1 0 011 1v5.586l4.707-4.707A1 1 0 0116 4h3a1 1 0 011 1v3a1 1 0 01-.293.707L15 13.414V9a1 1 0 00-1-1H9.414l-4.707 4.707A1 1 0 014 13.414V17a1 1 0 001 1h3.586l-4.707 4.707A1 1 0 004 21.414V17a2 2 0 01.586-1.414l.707-.707z"></path>
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">No notifications yet</h3>
+        <p class="text-gray-500 mb-6">You'll receive notifications when workers interact with your posts.</p>
+      </div>
+    </div>
+
+    <!-- Notifications List -->
+    <div *ngIf="!isLoading && notifications.length > 0" class="space-y-4">
+      <div
+        *ngFor="let notification of notifications; trackBy: trackByNotificationId"
+        class="notification-card"
+        [class.unread]="!notification.read"
+        (click)="navigateToAction(notification)"
+      >
+        <div class="flex items-start space-x-4">
+          <!-- Notification Icon -->
+          <div class="notification-icon" [ngClass]="getNotificationColor(notification.type)">
+            <span class="text-2xl">{{ getNotificationIcon(notification.type) }}</span>
+          </div>
+
+          <!-- Notification Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <p class="notification-message">{{ notification.message }}</p>
+                <div class="notification-meta">
+                  <span class="notification-time">{{ notification.createdAt | date:'MMM d, y \'at\' h:mm a' }}</span>
+                </div>
+              </div>
+
+              <!-- Unread Indicator -->
+              <div *ngIf="!notification.read" class="unread-indicator"></div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center space-x-2">
+            <button
+              *ngIf="!notification.read"
+              (click)="markAsRead(notification); $event.stopPropagation()"
+              class="action-btn read-btn"
+              title="Mark as read"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </button>
+
+            <button
+              (click)="deleteNotification(notification); $event.stopPropagation()"
+              class="action-btn delete-btn"
+              title="Delete notification"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

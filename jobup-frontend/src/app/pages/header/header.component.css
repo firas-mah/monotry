@@ -1,0 +1,33 @@
+/* Notification Bell Styles */
+.notification-bell {
+  @apply relative;
+}
+
+.notification-badge {
+  @apply absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center;
+  min-width: 20px;
+  font-size: 10px;
+}
+
+.notification-badge.hidden {
+  display: none;
+}
+
+/* Animation for notification bell */
+.notification-bell:hover {
+  @apply transform scale-105;
+}
+
+/* Pulse animation for new notifications */
+@keyframes pulse-notification {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.notification-bell.has-new {
+  animation: pulse-notification 2s infinite;
+}

@@ -1,0 +1,340 @@
+/* Post Card Styles */
+.post-card {
+  @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-gray-200;
+}
+
+.post-header {
+  @apply p-6 pb-4;
+}
+
+.post-title {
+  @apply text-xl font-bold text-gray-900 mb-2 leading-tight;
+}
+
+.post-meta {
+  @apply flex flex-wrap items-center gap-4 text-sm text-gray-500;
+}
+
+.meta-item {
+  @apply flex items-center gap-1.5;
+}
+
+.meta-item svg {
+  @apply flex-shrink-0;
+}
+
+.post-price {
+  @apply text-right;
+}
+
+.price-label {
+  @apply block text-xs text-gray-500 uppercase tracking-wide font-medium;
+}
+
+.price-value {
+  @apply text-2xl font-bold text-green-600;
+}
+
+/* Post Content */
+.post-content {
+  @apply px-6 pb-4;
+}
+
+.post-description {
+  @apply text-gray-700 leading-relaxed mb-4;
+}
+
+.skills-container {
+  @apply flex flex-wrap gap-2;
+}
+
+.skill-tag {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800;
+}
+
+/* Post Actions */
+.post-actions {
+  @apply px-6 py-4 bg-gray-50 border-t border-gray-100;
+}
+
+.action-buttons {
+  @apply flex items-center gap-4;
+}
+
+.action-btn {
+  @apply flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border;
+}
+
+.like-btn {
+  @apply border-gray-200 text-gray-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600;
+}
+
+.like-btn.liked {
+  @apply border-red-200 bg-red-50 text-red-600;
+}
+
+.save-btn {
+  @apply border-gray-200 text-gray-600 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600;
+}
+
+.save-btn.saved {
+  @apply border-blue-200 bg-blue-50 text-blue-600;
+}
+
+.comment-btn {
+  @apply border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-100;
+}
+
+/* Facebook-style Attachments */
+.post-attachments {
+  @apply mt-4;
+}
+
+/* Images Grid */
+.images-grid {
+  @apply grid gap-1 rounded-lg overflow-hidden mb-3;
+}
+
+.images-grid.single-image {
+  @apply grid-cols-1;
+}
+
+.images-grid.two-images {
+  @apply grid-cols-2;
+}
+
+.images-grid.multiple-images {
+  @apply grid-cols-2;
+}
+
+.image-container {
+  @apply relative cursor-pointer overflow-hidden bg-gray-100;
+  aspect-ratio: 16/9;
+  max-height: 300px;
+}
+
+.image-container.single-image {
+  aspect-ratio: 16/10;
+  max-height: 400px;
+}
+
+.image-container.more-overlay::after {
+  @apply absolute inset-0 bg-black bg-opacity-50;
+  content: '';
+}
+
+.attachment-image {
+  @apply w-full h-full object-cover transition-transform duration-200 hover:scale-105;
+}
+
+.more-count {
+  @apply absolute inset-0 flex items-center justify-center text-white text-2xl font-bold z-10;
+}
+
+/* Other Files */
+.other-files {
+  @apply space-y-2;
+}
+
+.file-item {
+  @apply flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors;
+}
+
+.file-icon {
+  @apply flex-shrink-0 w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm;
+}
+
+.file-type-icon {
+  @apply text-xl;
+}
+
+.file-info {
+  @apply flex-1 min-w-0;
+}
+
+.file-name {
+  @apply block font-medium text-gray-900 truncate;
+}
+
+.file-size {
+  @apply block text-sm text-gray-500;
+}
+
+.download-icon {
+  @apply text-gray-400 flex-shrink-0;
+}
+
+/* Responsive Design for Images */
+@media (max-width: 768px) {
+  .image-container {
+    max-height: 250px;
+  }
+  
+  .image-container.single-image {
+    max-height: 300px;
+  }
+  
+  .images-grid.multiple-images {
+    @apply grid-cols-1;
+  }
+  
+  .more-count {
+    @apply text-xl;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-container {
+    max-height: 200px;
+  }
+  
+  .image-container.single-image {
+    max-height: 250px;
+  }
+  
+  .images-grid.two-images {
+    @apply grid-cols-1;
+  }
+  
+  .file-item {
+    @apply p-2 gap-2;
+  }
+  
+  .file-icon {
+    @apply w-8 h-8;
+  }
+  
+  .file-type-icon {
+    @apply text-base;
+  }
+}
+
+/* Comments Section */
+.comments-section {
+  @apply border-t border-gray-100 bg-gray-50;
+}
+
+.comments-list {
+  @apply p-6 space-y-4 max-h-96 overflow-y-auto;
+}
+
+.comment-item {
+  @apply flex gap-3;
+}
+
+.comment-avatar {
+  @apply flex-shrink-0;
+}
+
+.avatar-circle {
+  @apply w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-semibold;
+}
+
+.current-user-avatar .avatar-circle {
+  @apply bg-gradient-to-br from-green-500 to-teal-600;
+}
+
+.comment-content {
+  @apply flex-1 min-w-0;
+}
+
+.comment-header {
+  @apply flex items-center gap-2 mb-1;
+}
+
+.comment-author {
+  @apply font-semibold text-gray-900 text-sm;
+}
+
+.comment-time {
+  @apply text-xs text-gray-500;
+}
+
+.comment-text {
+  @apply text-gray-700 text-sm leading-relaxed;
+}
+
+/* No Comments State */
+.no-comments {
+  @apply p-8 text-center text-gray-500;
+}
+
+.no-comments svg {
+  @apply mx-auto mb-3;
+}
+
+.no-comments p {
+  @apply text-sm;
+}
+
+/* Add Comment Form */
+.add-comment-form {
+  @apply p-6 border-t border-gray-200 bg-white;
+}
+
+.comment-input-container {
+  @apply flex gap-3;
+}
+
+.comment-input-wrapper {
+  @apply flex-1;
+}
+
+.comment-input {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm;
+}
+
+.comment-input:focus {
+  @apply outline-none;
+}
+
+.comment-actions {
+  @apply flex items-center justify-between mt-3;
+}
+
+.comment-hint {
+  @apply text-xs text-gray-500;
+}
+
+.comment-submit-btn {
+  @apply flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.comment-submit-btn:disabled {
+  @apply hover:bg-blue-600;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .post-header {
+    @apply p-4 pb-3;
+  }
+
+  .post-content {
+    @apply px-4 pb-3;
+  }
+
+  .post-actions {
+    @apply px-4 py-3;
+  }
+
+  .action-buttons {
+    @apply gap-2;
+  }
+
+  .action-btn {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .comments-list {
+    @apply p-4;
+  }
+
+  .add-comment-form {
+    @apply p-4;
+  }
+
+  .meta-item {
+    @apply text-xs;
+  }
+}

@@ -1,0 +1,270 @@
+.portfolio-upload-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.upload-section h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Drag and Drop Area */
+.drag-drop-area {
+  border: 2px dashed #007bff;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.drag-drop-area:hover {
+  border-color: #0056b3;
+  background: #e3f2fd;
+}
+
+.drag-drop-area.drag-over {
+  border-color: #28a745;
+  background: #d4edda;
+  transform: scale(1.02);
+}
+
+.file-input {
+  display: none;
+}
+
+.drop-content {
+  pointer-events: none;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.upload-text .primary-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 10px 0;
+}
+
+.upload-text .secondary-text {
+  color: #666;
+  margin: 10px 0;
+}
+
+.browse-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background-color 0.3s ease;
+}
+
+.browse-button:hover {
+  background: #0056b3;
+}
+
+.upload-progress {
+  margin: 20px 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #007bff;
+  transition: width 0.3s ease;
+}
+
+.file-info {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  line-height: 1.4;
+}
+
+/* Max files message */
+.max-files-message {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 15px;
+  text-align: center;
+  color: #856404;
+  margin-bottom: 20px;
+}
+
+/* Error Message */
+.error-message {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 15px;
+  color: #721c24;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-icon {
+  font-size: 1.2rem;
+}
+
+/* Uploaded Files Section */
+.uploaded-files-section {
+  margin-top: 30px;
+}
+
+.uploaded-files-section h4 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.file-card {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.file-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.file-preview {
+  text-align: center;
+  margin-bottom: 10px;
+  position: relative;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-icon {
+  font-size: 2.5rem;
+}
+
+.file-thumbnail {
+  max-width: 100%;
+  max-height: 80px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.file-info {
+  margin-bottom: 15px;
+}
+
+.file-name {
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+
+.file-size, .file-date {
+  color: #666;
+  font-size: 0.8rem;
+  margin: 2px 0;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.view-button, .delete-button {
+  background: none;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.view-button:hover {
+  background: #e3f2fd;
+  border-color: #007bff;
+}
+
+.delete-button:hover {
+  background: #ffebee;
+  border-color: #dc3545;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .portfolio-upload-container {
+    padding: 15px;
+  }
+
+  .files-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .drag-drop-area {
+    padding: 30px 15px;
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+  }
+}

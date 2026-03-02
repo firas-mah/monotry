@@ -1,0 +1,206 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Edit Profile</h1>
+          <p class="mt-2 text-sm text-gray-600">Update your account information</p>
+        </div>
+        <button
+          (click)="goBack()"
+          class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="bg-white shadow rounded-lg p-6">
+      <div class="flex items-center justify-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span class="ml-3 text-gray-600">Loading profile...</span>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="loadError" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">Error</h3>
+          <p class="mt-1 text-sm text-red-700">{{ loadError }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="submitSuccess" class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-green-800">Success</h3>
+          <p class="mt-1 text-sm text-green-700">Profile updated successfully! Redirecting...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div *ngIf="!isLoading && !loadError" class="bg-white shadow rounded-lg">
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="p-6 space-y-6">
+        <!-- Username Field -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            [class.border-red-300]="isFieldInvalid('username')"
+            [class.focus:border-red-500]="isFieldInvalid('username')"
+            [class.focus:ring-red-500]="isFieldInvalid('username')"
+          >
+          <p *ngIf="isFieldInvalid('username')" class="mt-1 text-sm text-red-600">
+            {{ getFieldError('username') }}
+          </p>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            [class.border-red-300]="isFieldInvalid('email')"
+            [class.focus:border-red-500]="isFieldInvalid('email')"
+            [class.focus:ring-red-500]="isFieldInvalid('email')"
+          >
+          <p *ngIf="isFieldInvalid('email')" class="mt-1 text-sm text-red-600">
+            {{ getFieldError('email') }}
+          </p>
+        </div>
+
+        <!-- Password Change Section -->
+        <div class="border-t border-gray-200 pt-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Change Password</h3>
+          <p class="text-sm text-gray-600 mb-4">Leave password fields empty if you don't want to change your password.</p>
+          
+          <!-- Current Password -->
+          <div class="mb-4">
+            <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+            <input
+              type="password"
+              id="currentPassword"
+              formControlName="currentPassword"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              [class.border-red-300]="isFieldInvalid('currentPassword')"
+              [class.focus:border-red-500]="isFieldInvalid('currentPassword')"
+              [class.focus:ring-red-500]="isFieldInvalid('currentPassword')"
+            >
+            <p *ngIf="isFieldInvalid('currentPassword')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('currentPassword') }}
+            </p>
+          </div>
+
+          <!-- New Password -->
+          <div class="mb-4">
+            <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+            <input
+              type="password"
+              id="newPassword"
+              formControlName="newPassword"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              [class.border-red-300]="isFieldInvalid('newPassword')"
+              [class.focus:border-red-500]="isFieldInvalid('newPassword')"
+              [class.focus:ring-red-500]="isFieldInvalid('newPassword')"
+            >
+            <p *ngIf="isFieldInvalid('newPassword')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('newPassword') }}
+            </p>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-4">
+            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              [class.border-red-300]="isFieldInvalid('confirmPassword')"
+              [class.focus:border-red-500]="isFieldInvalid('confirmPassword')"
+              [class.focus:ring-red-500]="isFieldInvalid('confirmPassword')"
+            >
+            <p *ngIf="isFieldInvalid('confirmPassword')" class="mt-1 text-sm text-red-600">
+              {{ getFieldError('confirmPassword') }}
+            </p>
+          </div>
+
+          <!-- Password Mismatch Error -->
+          <div *ngIf="clientForm.errors?.['passwordMismatch']" class="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">New passwords do not match.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Error -->
+        <div *ngIf="submitError" class="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">{{ submitError }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            (click)="goBack()"
+            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="clientForm.invalid || isSubmitting"
+            class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-md text-sm font-medium transition-colors"
+          >
+            <span *ngIf="isSubmitting" class="flex items-center">
+              <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Updating...
+            </span>
+            <span *ngIf="!isSubmitting">Update Profile</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

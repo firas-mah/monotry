@@ -1,0 +1,25 @@
+<nav class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <h1 class="text-xl font-bold text-gray-900">JobUp</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div *ngIf="currentUser$ | async as user" class="flex items-center space-x-4">
+            <!-- Notification Bell -->
+            <div class="relative">
+              <button (click)="goToNotifications()" class="notification-bell">
+                🔔
+                <span *ngIf="(unreadCount$ | async) as count" class="badge">
+                  {{ count }}
+                </span>
+              </button>
+            </div>
+            
+            <!-- Profile Dropdown -->
+            <app-profile-dropdown></app-profile-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+</nav>

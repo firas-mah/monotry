@@ -1,0 +1,17 @@
+<div class="profile-picture-container" [ngClass]="getSizeClass()">
+  <div *ngIf="isLoading" class="loading-placeholder">
+    <div class="spinner">⏳</div>
+  </div>
+
+  <img
+    *ngIf="!isLoading && profilePicture && imageUrl"
+    [src]="imageUrl"
+    alt="Profile picture"
+    class="profile-image"
+    (error)="onImageError($event)"
+    (load)="onImageLoad($event)">
+
+  <div *ngIf="!isLoading && !profilePicture && showFallback" class="fallback-avatar">
+    <span class="avatar-text">{{ getInitial() }}</span>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="profile-picture-upload">
+    <div class="current-picture">
+      <app-profile-picture-display
+        [userId]="userId"
+        [username]="username"
+        size="large"
+        [showFallback]="true">
+      </app-profile-picture-display>
+    </div>
+  
+    <div class="upload-controls">
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        accept="image/*"
+        class="file-input"
+        id="profile-picture-input">
+  
+      <label for="profile-picture-input" class="upload-button">
+        <span *ngIf="!isUploading">📷 Change Picture</span>
+        <span *ngIf="isUploading">⏳ Uploading...</span>
+      </label>
+  
+      <button
+        *ngIf="currentProfilePicture"
+        (click)="removeProfilePicture()"
+        class="remove-button"
+        type="button">
+        🗑️ Remove
+      </button>
+    </div>
+  
+    <div *ngIf="uploadError" class="error-message">
+      {{ uploadError }}
+    </div>
+  
+    <div class="upload-info">
+      <p>Recommended: Square image, at least 200x200 pixels</p>
+      <p>Supported formats: JPG, PNG, GIF (max 5MB)</p>
+    </div>
+  </div>
+  

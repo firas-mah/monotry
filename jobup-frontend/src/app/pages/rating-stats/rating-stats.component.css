@@ -1,0 +1,122 @@
+.rating-stats {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.overall-rating {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.completion-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.rating-distribution h4 {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+.distribution-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.distribution-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stars-label {
+  min-width: 80px;
+  display: flex;
+  gap: 2px;
+}
+
+.stars-label .star {
+  color: #ffc107;
+  font-size: 0.9rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffc107, #ff9800);
+  transition: width 0.3s ease;
+}
+
+.count-label {
+  min-width: 30px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.no-ratings {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+}
+
+.no-ratings p {
+  margin: 8px 0;
+}
+
+.completed-jobs {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .completion-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .distribution-row {
+    gap: 8px;
+  }
+
+  .stars-label {
+    min-width: 60px;
+  }
+}

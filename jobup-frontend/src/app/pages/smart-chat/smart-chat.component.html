@@ -1,0 +1,190 @@
+<div class="smart-chat-container">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="chat-info">
+      <h3>{{ workerName }}</h3>
+      <span class="status">Online</span>
+    </div>
+    <button class="btn btn-close" (click)="closeChat()">×</button>
+  </div>
+
+  <!-- Messages Container -->
+  <div class="messages-container" #messagesContainer>
+    <div *ngIf="isLoading" class="loading">Loading messages...</div>
+    
+    <div *ngFor="let message of messages" class="message" [ngClass]="{'own-message': isMessageFromCurrentUser(message)}">
+      <div class="message-content">
+        <div class="message-header">
+          <span class="sender-name">{{ message.senderName }}</span>
+          <span class="timestamp">{{ message.createdAt | date:'short' }}</span>
+        </div>
+        <div class="message-text">{{ message.content }}</div>
+      </div>
+    </div>
+
+    <!-- Proposal Cards -->
+    <div *ngFor="let proposal of proposals" class="proposal-card">
+      <div class="proposal-header">
+        <h4>{{ proposal.title }}</h4>
+        <span class="proposal-status" [ngClass]="proposal.status?.toLowerCase()">{{ proposal.status }}</span>
+      </div>
+      <div class="proposal-details">
+        <p><strong>Description:</strong> {{ proposal.description }}</p>
+        <p><strong>Duration:</strong> {{ proposal.durationMinutes  }} hours</p>
+        <p><strong>Price:</strong> {{ proposal.price }} TND</p>
+        <p *ngIf="proposal.location"><strong>Location:</strong> {{ proposal.location }}</p>
+        <p *ngIf="proposal.scheduledAt "><strong>Scheduled:</strong> {{ proposal.scheduledAt  | date:'medium' }}</p>
+      </div>
+      
+      <!-- Proposal Actions -->
+      <div *ngIf="proposal.status === 'PENDING' && !isMessageFromCurrentUser({senderName: proposal.senderName})" class="proposal-actions">
+        <button class="btn btn-accept" (click)="respondToProposal(proposal.id!, 'ACCEPTED')">✅ Accept</button>
+        <button class="btn btn-decline" (click)="respondToProposal(proposal.id!, 'DECLINED')">❌ Decline</button>
+        <button class="btn btn-negotiate" (click)="respondToProposal(proposal.id!, 'NEGOTIATED')">🛠 Negotiate</button>
+      </div>
+      
+      <!-- Confirmed Deal -->
+      <div *ngIf="proposal.status === 'ACCEPTED'" class="deal-confirmed">
+        <div class="deal-badge">✅ Job Deal Confirmed</div>
+        <p>Both parties have agreed to this proposal!</p>
+      </div>
+    </div>
+
+    <!-- Deal Cards -->
+    <div *ngFor="let deal of deals" class="deal-card">
+      <div class="deal-header">
+        <h4>{{ deal.title }}</h4>
+        <span class="deal-status" [ngClass]="deal.status?.toLowerCase()">{{ deal.status }}</span>
+      </div>
+      <div class="deal-details">
+        <p><strong>Description:</strong> {{ deal.description }}</p>
+        <p><strong>Duration:</strong> {{ deal.durationMinutes }} hours</p>
+        <p><strong>Price:</strong> {{ deal.price }} TND</p>
+        <p *ngIf="deal.location"><strong>Location:</strong> {{ deal.location }}</p>
+        <p *ngIf="deal.scheduledAt"><strong>Scheduled:</strong> {{ deal.scheduledAt | date:'medium' }}</p>
+        <p *ngIf="deal.confirmedAt"><strong>Confirmed:</strong> {{ deal.confirmedAt | date:'medium' }}</p>
+      </div>
+      
+      <!-- Deal Actions -->
+      <div *ngIf="deal.status === 'CONFIRMED'" class="deal-actions">
+        <button class="btn btn-progress" (click)="updateDealStatus(deal.id!, 'IN_PROGRESS')"> Start Work</button>
+      </div>
+      
+      <div *ngIf="deal.status === 'IN_PROGRESS'" class="deal-actions">
+        <button class="btn btn-complete" (click)="updateDealStatus(deal.id!, 'COMPLETED')">✅ Mark Complete</button>
+      </div>
+      
+      <div *ngIf="deal.status === 'COMPLETED' && !deal.rating" class="deal-actions">
+        <button class="btn btn-rate" (click)="selectDealForRating(deal.id!)">⭐ Rate & Review</button>
+      </div>
+      
+      <!-- Rating Display -->
+      <div *ngIf="deal.rating" class="rating-display">
+        <div class="stars">
+          <span *ngFor="let star of getStarRating(deal.rating)" class="star">{{ star }}</span>
+        </div>
+        <p *ngIf="deal.review"><strong>Review:</strong> {{ deal.review }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proposal Form -->
+  <div class="proposal-form-container" *ngIf="showProposalForm">
+    <form (ngSubmit)="sendProposal()" class="proposal-form">
+      <h4>Send Proposal</h4>
+      <label>
+        Title:
+        <input type="text" [(ngModel)]="proposalForm.title" name="title" required />
+      </label>
+      <label>
+        Description:
+        <textarea [(ngModel)]="proposalForm.description" name="description" required></textarea>
+      </label>
+      <label>
+        Duration (hours):
+        <input type="number" [(ngModel)]="proposalForm.duration" name="duration" min="1" required />
+      </label>
+      <label>
+        Price (TND):
+        <input type="number" [(ngModel)]="proposalForm.price" name="price" min="0" required />
+      </label>
+      <label>
+        Location (optional):
+        <input type="text" [(ngModel)]="proposalForm.location" name="location" />
+      </label>
+      <label>
+        Scheduled Time (optional):
+        <input type="datetime-local" [(ngModel)]="proposalForm.scheduledTime" name="scheduledTime" />
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Send Proposal</button>
+        <button type="button" class="btn btn-secondary" (click)="toggleProposalForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Chat Input -->
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      placeholder="Type your message..."
+      (keyup.enter)="sendMessage()"
+    />
+    <button class="btn btn-send" (click)="sendMessage()">Send</button>
+    <button class="btn btn-proposal" (click)="toggleProposalForm()">+ Send Proposal</button>
+  </div>
+</div>
+
+<!-- Rating Form Modal -->
+<div class="rating-form-container" *ngIf="showRatingForm">
+  <form (ngSubmit)="addRating()" class="rating-form">
+    <h4>Rate & Review</h4>
+
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="ratingError">
+      {{ ratingError }}
+    </div>
+
+    <label>
+      Rating: <span class="required">*</span>
+      <div class="star-rating">
+        <span *ngFor="let star of [1,2,3,4,5]"
+              class="star"
+              [class.filled]="star <= ratingForm.rating"
+              [class.disabled]="isSubmittingRating"
+              (click)="!isSubmittingRating && (ratingForm.rating = star)">★</span>
+      </div>
+      <small class="rating-text">{{ ratingForm.rating }}/5 stars</small>
+    </label>
+
+    <label>
+      Review: <span class="optional">(Optional)</span>
+      <textarea
+        [(ngModel)]="ratingForm.review"
+        name="review"
+        placeholder="Share your experience with this worker..."
+        maxlength="1000"
+        rows="4"
+        [disabled]="isSubmittingRating"></textarea>
+      <small class="char-count">{{ ratingForm.review.length }}/1000 characters</small>
+    </label>
+
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSubmittingRating || !ratingForm.rating">
+        <span *ngIf="isSubmittingRating">Submitting...</span>
+        <span *ngIf="!isSubmittingRating">Submit Rating</span>
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        [disabled]="isSubmittingRating"
+        (click)="showRatingForm = false; ratingError = ''">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

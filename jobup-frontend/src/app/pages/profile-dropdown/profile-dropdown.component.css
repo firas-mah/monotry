@@ -1,0 +1,113 @@
+/* Profile Dropdown Component Styles */
+
+/* Smooth transitions for dropdown */
+.dropdown-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  
+  .dropdown-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  }
+  
+  .dropdown-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .dropdown-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+  }
+  
+  /* Profile picture hover effect */
+  .profile-picture {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .profile-picture:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Dropdown menu animations */
+  .dropdown-menu {
+    animation: slideDown 0.2s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Menu item hover effects */
+  .menu-item {
+    transition: all 0.15s ease-in-out;
+  }
+  
+  .menu-item:hover {
+    background-color: #f9fafb;
+    transform: translateX(2px);
+  }
+  
+  /* Logout button special styling */
+  .logout-button {
+    transition: all 0.15s ease-in-out;
+  }
+  
+  .logout-button:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+  }
+  
+  /* Backdrop styling */
+  .backdrop {
+    background-color: transparent;
+    backdrop-filter: none;
+  }
+  
+  /* Focus states for accessibility */
+  .profile-button:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  .menu-button:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: -2px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .dropdown-menu {
+      width: 280px;
+      right: -10px;
+    }
+  }
+  
+  /* Custom scrollbar for dropdown if needed */
+  .dropdown-menu::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+  
+  .dropdown-menu::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+  }
+  
+  .dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
