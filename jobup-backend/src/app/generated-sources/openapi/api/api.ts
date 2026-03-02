@@ -1,0 +1,17 @@
+export * from './authentication.service';
+import { AuthenticationService } from './authentication.service';
+export * from './chatController.service';
+import { ChatControllerService } from './chatController.service';
+export * from './fileUpload.service';
+import { FileUploadService } from './fileUpload.service';
+export * from './jobDealController.service';
+import { JobDealControllerService } from './jobDealController.service';
+export * from './jobPostController.service';
+import { JobPostControllerService } from './jobPostController.service';
+export * from './notificationController.service';
+import { NotificationControllerService } from './notificationController.service';
+export * from './proposalController.service';
+import { ProposalControllerService } from './proposalController.service';
+export * from './workerController.service';
+import { WorkerControllerService } from './workerController.service';
+export const APIS = [AuthenticationService, ChatControllerService, FileUploadService, JobDealControllerService, JobPostControllerService, NotificationControllerService, ProposalControllerService, WorkerControllerService];
